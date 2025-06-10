@@ -1,0 +1,29 @@
+name: MLflow CI Training
+
+on:
+  push:
+    branches: [master]  # atau ganti jadi main jika kamu pakai 'main'
+
+jobs:
+  train-model:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      - name: Set up Conda
+        uses: conda-incubator/setup-miniconda@v2
+        with:
+          activate-environment: mlflow-env
+          environment-file: MLProject/conda.yaml
+          auto-activate-base: false
+
+      - name: Install MLflow
+        run: |
+          pip install mlflow
+
+      - name: Run MLflow Project
+        run: |
+          cd MLProject
+          mlflow run .
